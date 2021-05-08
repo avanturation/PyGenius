@@ -8,5 +8,10 @@ class Authentication:
         self.client_secret = client_secret
         self.HTTP = AsyncRequest(client_id, client_secret)
 
-    async def issue_token(self, scopes: Optional[List] = []):
+    async def issue_token(self, scopes: Optional[List]):
         return await self.HTTP.auth(scopes)
+
+    async def access_endpoint(self, scopes: Optional[List], endpoint, **kwargs):
+        access_token = await self.issue_token(scopes)
+
+        return await self.HTTP.request(endpoint, access_token, **kwargs)
