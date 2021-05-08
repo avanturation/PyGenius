@@ -1,5 +1,5 @@
 from aiohttp import ClientSession
-from typing import Optional
+from typing import List, Optional
 
 BASE_URL = "https://api.genius.com"
 
@@ -9,7 +9,7 @@ class AsyncRequest:
         self.client_id = client_id
         self.client_secret = client_secret
 
-    async def auth(self, scopes: Optional[str]):
+    async def auth(self, scopes: Optional[List]):
         async with ClientSession() as session:
             query = {
                 "client_id": self.client_id,
