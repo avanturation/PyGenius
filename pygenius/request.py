@@ -1,7 +1,7 @@
 from aiohttp import ClientSession
 from typing import Optional, Any
 
-from ..interface import HTTPException, GeniusException
+from .exceptions import HTTPException, GeniusException
 
 BASE_URL = "https://api.genius.com"
 
