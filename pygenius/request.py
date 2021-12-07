@@ -45,6 +45,7 @@ class GeniusRequest(Base):
     def __init__(self, client_id: str, client_secret: str) -> None:
         self.client_id = client_id
         self.client_secret = client_secret
+        self.access_token: Optional[str] = None
 
     async def auth(self, scopes: Optional[str]):
         query = {
@@ -60,9 +61,17 @@ class GeniusRequest(Base):
 
         return resp["access_token"]
 
-    async def request(self, endpoint, access_token, **kwargs):
+    async def send_request(self, endpoint, **kwargs):
+        if endpoint == "/account":
+            scopes = "me"
+        else:
+            scopes = ""
+
+        if self.access_token is None:
+            self.access_token = await self.auth(scopes)
+
         headers = {
-            "Authorization": f"Bearer {access_token}",
+            "Authorization": f"Bearer {self.access_token}",
             "Accept": "application/json",
             "User-Agent": "CompuServe Classic/1.22",
         }
