@@ -46,6 +46,7 @@ class GeniusRequest(Base):
         self.client_id = client_id
         self.client_secret = client_secret
         self.access_token: Optional[str] = None
+        super().__init__()
 
     async def auth(self, scopes: Optional[str]):
         query = {
@@ -77,11 +78,11 @@ class GeniusRequest(Base):
         }
 
         resp = await self.get(
-            f"{BASE_URL}{endpoint}", return_type="json", params=kwargs, headers=headers
+            f"{BASE_URL}{endpoint}", return_type="json", headers=headers, **kwargs
         )
 
         if resp["meta"]["status"] == 200:
-            return resp
+            return resp["response"]
 
         else:
             raise GeniusException(
