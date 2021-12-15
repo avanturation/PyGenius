@@ -40,6 +40,13 @@ class Base:
 
         return await self.request(url, "GET", **kwargs)
 
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if self.session:
+            await self.session.close()
+
 
 class GeniusRequest(Base):
     def __init__(self, client_id: str, client_secret: str) -> None:

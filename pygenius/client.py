@@ -7,8 +7,8 @@ from .request import GeniusRequest
 
 def hooker(func):
     @wraps(func)
-    async def real(*args, **kwargs):
-        raw = await func(*args, **kwargs)
+    async def real(self, *args, **kwargs):
+        raw = await func(self, *args, **kwargs)
         return loads(dumps(raw), object_hook=lambda d: SimpleNamespace(**d))
 
     return real
